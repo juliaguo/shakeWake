@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B2F4F5DA1EB0FBD30094922D /* SensorModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F4F5D91EB0FBD30094922D /* SensorModel.swift */; };
+		B2F4F5DC1EB0FC600094922D /* BLE.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F4F5DB1EB0FC600094922D /* BLE.swift */; };
 		DA566F771EB0F6E80074B938 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA566F761EB0F6E80074B938 /* AppDelegate.swift */; };
 		DA566F791EB0F6E80074B938 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA566F781EB0F6E80074B938 /* ViewController.swift */; };
 		DA566F7C1EB0F6E80074B938 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DA566F7A1EB0F6E80074B938 /* Main.storyboard */; };
@@ -34,6 +36,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		B2F4F5D91EB0FBD30094922D /* SensorModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SensorModel.swift; sourceTree = "<group>"; };
+		B2F4F5DB1EB0FC600094922D /* BLE.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BLE.swift; sourceTree = "<group>"; };
 		DA566F731EB0F6E80074B938 /* shakeWake.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = shakeWake.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA566F761EB0F6E80074B938 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DA566F781EB0F6E80074B938 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -74,9 +78,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B2F4F5D81EB0FB940094922D /* BLErange */ = {
+			isa = PBXGroup;
+			children = (
+				B2F4F5D91EB0FBD30094922D /* SensorModel.swift */,
+				B2F4F5DB1EB0FC600094922D /* BLE.swift */,
+			);
+			name = BLErange;
+			sourceTree = "<group>";
+		};
 		DA566F6A1EB0F6E80074B938 = {
 			isa = PBXGroup;
 			children = (
+				B2F4F5D81EB0FB940094922D /* BLErange */,
 				DA566F751EB0F6E80074B938 /* shakeWake */,
 				DA566F8A1EB0F6E80074B938 /* shakeWakeTests */,
 				DA566F951EB0F6E80074B938 /* shakeWakeUITests */,
@@ -193,7 +207,6 @@
 				TargetAttributes = {
 					DA566F721EB0F6E80074B938 = {
 						CreatedOnToolsVersion = 8.2.1;
-						DevelopmentTeam = 2G76TBKNPC;
 						ProvisioningStyle = Automatic;
 					};
 					DA566F861EB0F6E80074B938 = {
@@ -262,8 +275,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B2F4F5DA1EB0FBD30094922D /* SensorModel.swift in Sources */,
 				DA566F791EB0F6E80074B938 /* ViewController.swift in Sources */,
 				DA566F771EB0F6E80074B938 /* AppDelegate.swift in Sources */,
+				B2F4F5DC1EB0FC600094922D /* BLE.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -413,7 +428,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 2G76TBKNPC;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = shakeWake/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "-s062.shakeWake";
@@ -426,7 +441,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 2G76TBKNPC;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = shakeWake/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "-s062.shakeWake";
@@ -512,6 +527,7 @@
 				DA566F9D1EB0F6E80074B938 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		DA566F9E1EB0F6E80074B938 /* Build configuration list for PBXNativeTarget "shakeWakeTests" */ = {
 			isa = XCConfigurationList;
@@ -520,6 +536,7 @@
 				DA566FA01EB0F6E80074B938 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		DA566FA11EB0F6E80074B938 /* Build configuration list for PBXNativeTarget "shakeWakeUITests" */ = {
 			isa = XCConfigurationList;
@@ -528,6 +545,7 @@
 				DA566FA31EB0F6E80074B938 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
