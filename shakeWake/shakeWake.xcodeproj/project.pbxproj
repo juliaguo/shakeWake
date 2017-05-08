@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6537A16E1EC0C6EF00AFB0A2 /* alarm_clock_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 6537A16C1EC0C6EF00AFB0A2 /* alarm_clock_icon.png */; };
+		6537A16F1EC0C6EF00AFB0A2 /* alarm_sound.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 6537A16D1EC0C6EF00AFB0A2 /* alarm_sound.mp3 */; };
 		B2F4F5DA1EB0FBD30094922D /* SensorModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F4F5D91EB0FBD30094922D /* SensorModel.swift */; };
 		B2F4F5DC1EB0FC600094922D /* BLE.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F4F5DB1EB0FC600094922D /* BLE.swift */; };
 		DA566F771EB0F6E80074B938 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA566F761EB0F6E80074B938 /* AppDelegate.swift */; };
@@ -36,6 +38,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		6537A16C1EC0C6EF00AFB0A2 /* alarm_clock_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = alarm_clock_icon.png; sourceTree = "<group>"; };
+		6537A16D1EC0C6EF00AFB0A2 /* alarm_sound.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = alarm_sound.mp3; sourceTree = "<group>"; };
 		B2F4F5D91EB0FBD30094922D /* SensorModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SensorModel.swift; sourceTree = "<group>"; };
 		B2F4F5DB1EB0FC600094922D /* BLE.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BLE.swift; sourceTree = "<group>"; };
 		DA566F731EB0F6E80074B938 /* shakeWake.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = shakeWake.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -78,6 +82,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6537A16B1EC0C68E00AFB0A2 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				6537A16C1EC0C6EF00AFB0A2 /* alarm_clock_icon.png */,
+				6537A16D1EC0C6EF00AFB0A2 /* alarm_sound.mp3 */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		B2F4F5D81EB0FB940094922D /* BLErange */ = {
 			isa = PBXGroup;
 			children = (
@@ -90,6 +103,7 @@
 		DA566F6A1EB0F6E80074B938 = {
 			isa = PBXGroup;
 			children = (
+				6537A16B1EC0C68E00AFB0A2 /* Supporting Files */,
 				B2F4F5D81EB0FB940094922D /* BLErange */,
 				DA566F751EB0F6E80074B938 /* shakeWake */,
 				DA566F8A1EB0F6E80074B938 /* shakeWakeTests */,
@@ -249,8 +263,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				DA566F811EB0F6E80074B938 /* LaunchScreen.storyboard in Resources */,
+				6537A16F1EC0C6EF00AFB0A2 /* alarm_sound.mp3 in Resources */,
 				DA566F7E1EB0F6E80074B938 /* Assets.xcassets in Resources */,
 				DA566F7C1EB0F6E80074B938 /* Main.storyboard in Resources */,
+				6537A16E1EC0C6EF00AFB0A2 /* alarm_clock_icon.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
