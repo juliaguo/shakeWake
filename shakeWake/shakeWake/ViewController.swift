@@ -18,8 +18,8 @@ class ViewController: UIViewController {
     @IBOutlet weak var datePicker: UIDatePicker!
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var turnOffAlarmButton: UIButton!
-    var theTimer: NSTimer!
-    var dateString: NSString!
+    var theTimer: Timer!
+    var dateString: String!
     var strDate: String?
     var selectedAlarmTime: String?
     var player: AVAudioPlayer?
@@ -27,50 +27,56 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Initialize strDate value in case user sets alarm on current date selected
-        var dateFormatter = NSDateFormatter()
+        var dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd-MM-yyyy HH:mm"
-        strDate = dateFormatter.stringFromDate(datePicker.date)
-        turnOffAlarmButton.enabled = false
+        strDate = dateFormatter.string(from: datePicker.date)
+        dateFormatter.dateFormat = "hh:mm a"
+        alarmSetLabel.text = dateFormatter.string(from: datePicker.date)
+        turnOffAlarmButton.isEnabled = false
         setTime()
     }
     
     @IBAction func datePickerAction(sender: AnyObject) {
-        var dateFormatter = NSDateFormatter()
+        var dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd-MM-yyyy HH:mm"
-        strDate = dateFormatter.stringFromDate(datePicker.date)
+        strDate = dateFormatter.string(from: datePicker.date)
+        dateFormatter.dateFormat = "hh:mm a"
+        alarmSetLabel.text = dateFormatter.string(from: datePicker.date)
     }
     
     @IBAction func setAlarmAction(sender: AnyObject) {
         selectedAlarmTime = strDate
-        alarmSetLabel.text = dateString as String
-        alarmSetLabel.enabled = true
-        alarmSetIcon.hidden = false
+        alarmSetLabel.isEnabled = true
+        alarmSetLabel.isHidden = false
+        alarmSetIcon.isHidden = false
     }
     
     
     func playSound() {
-        let url = NSBundle.mainBundle().URLForResource("alarm_sound", withExtension: "mp3")!
-        
+        let url = Bundle.main.url(forResource: "Human_Eating_Watermelon", withExtension: "mp3")!
+        NSLog(String(describing: url))
+        NSLog("playing sound")
         do {
-            player = try AVAudioPlayer(contentsOfURL: url)
+            player = try AVAudioPlayer(contentsOf: url)
             guard let player = player else { return }
-            
             player.prepareToPlay()
+            player.numberOfLoops = -1
             player.play()
             
         } catch let error as NSError {
+            NSLog("in error")
             print(error.description)
         }
         
     }
     
     func checkTime(alarmTime: String, currentTime: NSDate) -> Bool {
-        let dateFormatter = NSDateFormatter()
+        let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd-MM-yyyy HH:mm"
         var alarmAsDate: NSDate!
         if (alarmTime != ""){
-            alarmAsDate = dateFormatter.dateFromString(alarmTime)
-            if (alarmAsDate.timeIntervalSinceDate(currentTime) < 1){
+            alarmAsDate = dateFormatter.date(from: alarmTime) as NSDate!
+            if (alarmAsDate.timeIntervalSince(currentTime as Date) < 1 && alarmAsDate.timeIntervalSince(currentTime as Date) > -1){
                 return true
             }
         }
@@ -84,36 +90,41 @@ class ViewController: UIViewController {
     }
     
     @IBAction func turnOffAlarm(sender: AnyObject) {
+        player!.stop()
         selectedAlarmTime = ""
-        setAlarmButton.enabled = true
-        cancelAlarmButton.enabled = true
-        turnOffAlarmButton.enabled = false
-        alarmSetLabel.enabled = false
-        alarmSetIcon.hidden = true
+        setAlarmButton.isEnabled = true
+        cancelAlarmButton.isEnabled = true
+        turnOffAlarmButton.isEnabled = false
+        alarmSetLabel.isEnabled = false
+        alarmSetLabel.isHidden = true
+        alarmSetIcon.isHidden = true
         
     }
     
     @IBAction func cancelAlarmAction(sender: AnyObject) {
         selectedAlarmTime = ""
+        alarmSetLabel.isHidden = true
+        alarmSetLabel.isEnabled = false
+        alarmSetIcon.isHidden = true
         
     }
     
     func setTime() {
-        theTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "setTime", userInfo: nil, repeats: false)
+        theTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: "setTime", userInfo: nil, repeats: false)
         
-        let date: NSDate = NSDate()
+        var date: NSDate = NSDate()
         
-        let dateFormatter: NSDateFormatter = NSDateFormatter()
-        dateFormatter.dateFormat = "hh:mm:ss: a"
-        dateString = dateFormatter.stringFromDate(date)
+        let dateFormatter: DateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "hh:mm:ss a"
+        dateString = dateFormatter.string(from: date as Date)
         timeLabel.text = dateString as String
         if (selectedAlarmTime != nil){
-            var timeToWake: Bool = checkTime(selectedAlarmTime!, currentTime: date)
+            var timeToWake: Bool = checkTime(alarmTime: selectedAlarmTime!, currentTime: date)
             if(timeToWake){
                 soundAlarm()
-                turnOffAlarmButton.enabled = true
-                cancelAlarmButton.enabled = false
-                setAlarmButton.enabled = false
+                turnOffAlarmButton.isEnabled = true
+                cancelAlarmButton.isEnabled = false
+                setAlarmButton.isEnabled = false
             }
         }
     }
