@@ -10,6 +10,31 @@ import UIKit
 import AVFoundation
 import CoreMotion
 import GLKit
+import CoreLocation
+
+import UserNotifications
+
+extension ViewController:UNUserNotificationCenterDelegate{
+    
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        
+        print("Tapped in notification")
+    }
+    
+    //This is key callback to present notification while the app is in foreground
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        
+        print("Notification being triggered")
+        //You can either present alert ,sound or increase badge while the app is in foreground too with ios 10
+        //to distinguish between notifications
+        if notification.request.identifier == "requestIdentifier"{
+            
+            completionHandler( [.alert,.sound,.badge])
+            
+        }
+    }
+}
 
 class ViewController: UIViewController {
     
@@ -31,6 +56,7 @@ class ViewController: UIViewController {
     var accelAvg = MovingAverage(period: 100)
     let threshold: Double = 5.0
     var alarmRinging = false
+    let locationManager = CLLocationManager()
     
     
     
@@ -46,6 +72,15 @@ class ViewController: UIViewController {
         setTime()
         alarmSetLabel.isHidden = true
         
+        locationManager.requestAlwaysAuthorization()
+        
+//        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.distanceFilter = 0
+        locationManager.headingOrientation = .portrait
+        locationManager.startUpdatingHeading()
+        locationManager.startUpdatingLocation()
+        
         // 3D accel
         motionManager.deviceMotionUpdateInterval = 1e-2
         
@@ -54,6 +89,20 @@ class ViewController: UIViewController {
             to: OperationQueue.main) { [weak self] (motion, error) in
                 self?.accumulateMotion(motion)
         }
+    }
+    
+    func locationManager(_ manager: CLLocationManager) {
+        NSLog("hi")
+    }
+    
+    func sendNotif(alarmTime: Date){
+        print("sending notif")
+        // create a corresponding local notification
+        let notification = UILocalNotification()
+        notification.alertBody = "Hello"
+        notification.alertAction = "open" // text that is displayed after "slide to..." on the lock screen - defaults to "slide to view"
+        notification.fireDate = alarmTime // todo item due date (when notification will be fired) notification.soundName = UILocalNotificationDefaultSoundName // play default sound
+        UIApplication.shared.scheduleLocalNotification(notification)
     }
     
     @IBAction func datePickerAction(sender: AnyObject) {
@@ -69,6 +118,27 @@ class ViewController: UIViewController {
         alarmSetLabel.isEnabled = true
         alarmSetLabel.isHidden = false
         alarmSetIcon.isHidden = false
+    }
+    
+    @IBAction func triggerNotif(){
+        print("triggering notif, chill for a sec")
+        let content = UNMutableNotificationContent()
+        content.title = "Intro to notifs"
+        content.subtitle = "Let's code, hi mochi"
+        content.body = "s/o shakewake"
+        content.sound = UNNotificationSound.default()
+        
+        let trigger = UNTimeIntervalNotificationTrigger.init(timeInterval: 5.0, repeats: false)
+        let request = UNNotificationRequest(identifier:"requestIdentifier", content: content, trigger: trigger)
+        
+        UNUserNotificationCenter.current().delegate = self
+        UNUserNotificationCenter.current().add(request){(error) in
+            
+            if (error != nil){
+                
+                print(error?.localizedDescription)
+            }
+        }
     }
     
     
@@ -104,10 +174,11 @@ class ViewController: UIViewController {
     }
     
     func soundAlarm(){
+        NSLog("alarm sounding")
         playSound()
+//        triggerNotif()
+        //sendNotif(alarmTime: datePicker.date)
         alarmRinging = true
-        
-        // figure out how to check if button pressed or allow that to happen, maybe just simulator?
     }
     
     @IBAction func turnOffAlarm(sender: AnyObject) {
@@ -143,12 +214,14 @@ class ViewController: UIViewController {
         if (selectedAlarmTime != nil){
             var timeToWake: Bool = checkTime(alarmTime: selectedAlarmTime!, currentTime: date)
             if(timeToWake){
+                NSLog("TIME TO WAKE!!!!!!")
                 soundAlarm()
                 turnOffAlarmButton.isEnabled = true
                 cancelAlarmButton.isEnabled = false
                 setAlarmButton.isEnabled = false
             }
         }
+        locationManager.requestLocation()
     }
     
     
@@ -176,12 +249,12 @@ class ViewController: UIViewController {
         var acceleration: GLKVector3 = userAcceleration
         // rotate acceleration from instantaneous coordinates into persistent coordinates
         acceleration = GLKQuaternionRotateVector3(attitude, acceleration)
-        acceleration = GLKVector3MultiplyScalar(acceleration, -1.0)
+//        acceleration = GLKVector3MultiplyScalar(acceleration, -1.0)
         
         let accelMag = GLKVector3Length(acceleration)
         let updatedAvg = accelAvg.addSample(value: Double(accelMag))
         if alarmRinging {
-            NSLog(String(accelAvg.getAverage()))
+            //NSLog(String(accelAvg.getAverage()))
         }
         if (accelAvg.getAverage() > threshold && alarmRinging) {
             turnOffAlarm(sender: self)
