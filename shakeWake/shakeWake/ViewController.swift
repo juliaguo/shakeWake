@@ -36,7 +36,17 @@ extension ViewController:UNUserNotificationCenterDelegate{
     }
 }
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, SensorModelDelegate {
+    
+    
+    func sensorModel(_ model: SensorModel, didChangeActiveHill hill: Hill?) {
+        NSLog("Active Hill Changed");
+    }
+    
+    func sensorModel(_ model: SensorModel, didReceiveRange ranges: [Float], forHill hill: Hill?) {
+        NSLog("Ranges received");
+    }
+
     
     @IBOutlet weak var alarmSetIcon: UIImageView!
     @IBOutlet weak var alarmSetLabel: UILabel!
@@ -56,7 +66,10 @@ class ViewController: UIViewController {
     var accelAvg = MovingAverage(period: 100)
     let threshold: Double = 5.0
     var alarmRinging = false
+   
     let locationManager = CLLocationManager()
+    
+    
     
     
     
@@ -72,15 +85,18 @@ class ViewController: UIViewController {
         setTime()
         alarmSetLabel.isHidden = true
         
-        locationManager.requestAlwaysAuthorization()
+        SensorModel.shared.delegate = self
         
-//        locationManager.delegate = self
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        locationManager.distanceFilter = 0
-        locationManager.headingOrientation = .portrait
-        locationManager.startUpdatingHeading()
-        locationManager.startUpdatingLocation()
         
+//        locationManager.requestAlwaysAuthorization()
+//        
+////        locationManager.delegate = self
+//        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+//        locationManager.distanceFilter = 0
+//        locationManager.headingOrientation = .portrait
+//        locationManager.startUpdatingHeading()
+//        locationManager.startUpdatingLocation()
+//        
         // 3D accel
         motionManager.deviceMotionUpdateInterval = 1e-2
         
@@ -221,7 +237,7 @@ class ViewController: UIViewController {
                 setAlarmButton.isEnabled = false
             }
         }
-        locationManager.requestLocation()
+//        locationManager.requestLocation()
     }
     
     

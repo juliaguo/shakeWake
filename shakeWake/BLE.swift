@@ -47,6 +47,7 @@ protocol BLEDelegate {
     func ble(didConnectToPeripheral peripheral: CBPeripheral)
     func ble(didDisconnectFromPeripheral peripheral: CBPeripheral)
     func ble(_ peripheral: CBPeripheral, didReceiveData data: Data?)
+    func ble(_ peripheral: CBPeripheral, didUpdateRSSI: NSNumber?)
 }
 
 private extension CBUUID {
@@ -71,6 +72,7 @@ class BLE: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     
     private      var centralManager:   CBCentralManager!
     private      var activePeripheral: CBPeripheral?
+    private      var activeRSSI: NSNumber?
     private      var characteristics = [String : CBCharacteristic]()
     private      var data:             NSMutableData?
     private(set) var peripherals     = [CBPeripheral]()
@@ -272,7 +274,9 @@ class BLE: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
     }
     
     func peripheral(_ peripheral: CBPeripheral, didReadRSSI RSSI: NSNumber, error: Error?) {
+        activeRSSI = RSSI
         RSSICompletionHandler?(RSSI, error)
         RSSICompletionHandler = nil
+        delegate?.ble(peripheral, didUpdateRSSI: RSSI)
     }
 }
