@@ -12,31 +12,7 @@ import CoreMotion
 import GLKit
 import CoreLocation
 
-import UserNotifications
-
-extension ViewController:UNUserNotificationCenterDelegate{
-    
-    
-    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-        
-        print("Tapped in notification")
-    }
-    
-    //This is key callback to present notification while the app is in foreground
-    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        
-        print("Notification being triggered")
-        //You can either present alert ,sound or increase badge while the app is in foreground too with ios 10
-        //to distinguish between notifications
-        if notification.request.identifier == "requestIdentifier"{
-            
-            completionHandler( [.alert,.sound,.badge])
-            
-        }
-    }
-}
-
-class ViewController: UIViewController {
+class ViewController: UIViewController, CLLocationManagerDelegate {
     
     @IBOutlet weak var alarmSetIcon: UIImageView!
     @IBOutlet weak var alarmSetLabel: UILabel!
@@ -54,14 +30,16 @@ class ViewController: UIViewController {
     // 3D accel
     var motionManager: CMMotionManager = CMMotionManager()
     var accelAvg = MovingAverage(period: 100)
-    let threshold: Double = 5.0
+    let threshold: Double = 7.0
     var alarmRinging = false
     let locationManager = CLLocationManager()
     
+    let session: AVAudioSession = AVAudioSession.sharedInstance()
     
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
+        print("view loading")
         // Initialize strDate value in case user sets alarm on current date selected
         var dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd-MM-yyyy HH:mm"
@@ -74,12 +52,7 @@ class ViewController: UIViewController {
         
         locationManager.requestAlwaysAuthorization()
         
-//        locationManager.delegate = self
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        locationManager.distanceFilter = 0
-        locationManager.headingOrientation = .portrait
-        locationManager.startUpdatingHeading()
-        locationManager.startUpdatingLocation()
+        locationManager.delegate = self
         
         // 3D accel
         motionManager.deviceMotionUpdateInterval = 1e-2
@@ -89,21 +62,36 @@ class ViewController: UIViewController {
             to: OperationQueue.main) { [weak self] (motion, error) in
                 self?.accumulateMotion(motion)
         }
+        
+        do {
+            print("do block")
+            try session.setCategory(AVAudioSessionCategoryPlayback)
+        }   catch {
+            print("catching goldfish")
+            
+        }
+        
+        let url = Bundle.main.url(forResource: "1secsilence", withExtension: "wav")!
+        //        NSLog(String(describing: url))
+        NSLog("playing silence sound")
+        do {
+            player = try AVAudioPlayer(contentsOf: url)
+            guard let player = player else {return }
+            player.prepareToPlay()
+            player.numberOfLoops = -1
+            player.play()
+            
+        } catch let error as NSError {
+            NSLog("in error")
+            print(error.description)
+        }
+    }
+
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        NSLog("in didUpdateLocations")
     }
     
-    func locationManager(_ manager: CLLocationManager) {
-        NSLog("hi")
-    }
-    
-    func sendNotif(alarmTime: Date){
-        print("sending notif")
-        // create a corresponding local notification
-        let notification = UILocalNotification()
-        notification.alertBody = "Hello"
-        notification.alertAction = "open" // text that is displayed after "slide to..." on the lock screen - defaults to "slide to view"
-        notification.fireDate = alarmTime // todo item due date (when notification will be fired) notification.soundName = UILocalNotificationDefaultSoundName // play default sound
-        UIApplication.shared.scheduleLocalNotification(notification)
-    }
     
     @IBAction func datePickerAction(sender: AnyObject) {
         var dateFormatter = DateFormatter()
@@ -118,40 +106,23 @@ class ViewController: UIViewController {
         alarmSetLabel.isEnabled = true
         alarmSetLabel.isHidden = false
         alarmSetIcon.isHidden = false
-    }
-    
-    @IBAction func triggerNotif(){
-        print("triggering notif, chill for a sec")
-        let content = UNMutableNotificationContent()
-        content.title = "Intro to notifs"
-        content.subtitle = "Let's code, hi mochi"
-        content.body = "s/o shakewake"
-        content.sound = UNNotificationSound.default()
         
-        let trigger = UNTimeIntervalNotificationTrigger.init(timeInterval: 5.0, repeats: false)
-        let request = UNNotificationRequest(identifier:"requestIdentifier", content: content, trigger: trigger)
-        
-        UNUserNotificationCenter.current().delegate = self
-        UNUserNotificationCenter.current().add(request){(error) in
-            
-            if (error != nil){
-                
-                print(error?.localizedDescription)
-            }
-        }
     }
-    
     
     func playSound() {
         let url = Bundle.main.url(forResource: "alarm_sound", withExtension: "mp3")!
 //        NSLog(String(describing: url))
-//        NSLog("playing sound")
+        //NSLog("playing sound")
         do {
+            //print("creating player")
             player = try AVAudioPlayer(contentsOf: url)
-            guard let player = player else { return }
+            guard let player = player else {return }
+            //print("not returned")
             player.prepareToPlay()
+            //print("prepped")
             player.numberOfLoops = -1
             player.play()
+//            print("playing music")
             
         } catch let error as NSError {
             NSLog("in error")
@@ -174,7 +145,7 @@ class ViewController: UIViewController {
     }
     
     func soundAlarm(){
-        NSLog("alarm sounding")
+        //NSLog("alarm sounding")
         playSound()
 //        triggerNotif()
         //sendNotif(alarmTime: datePicker.date)
@@ -214,14 +185,14 @@ class ViewController: UIViewController {
         if (selectedAlarmTime != nil){
             var timeToWake: Bool = checkTime(alarmTime: selectedAlarmTime!, currentTime: date)
             if(timeToWake){
-                NSLog("TIME TO WAKE!!!!!!")
+                //NSLog("TIME TO WAKE!!!!!!")
                 soundAlarm()
                 turnOffAlarmButton.isEnabled = true
                 cancelAlarmButton.isEnabled = false
                 setAlarmButton.isEnabled = false
             }
         }
-        locationManager.requestLocation()
+//        locationManager.requestLocation()
     }
     
     
@@ -266,7 +237,23 @@ class ViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print(error)
+        print(error.localizedDescription)
+    }
     
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        print("in didChangeAuthorization")
+        print(status)
+        print(status.rawValue)
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.distanceFilter = 0
+        locationManager.headingOrientation = .portrait
+        locationManager.allowsBackgroundLocationUpdates = true
+        locationManager.startUpdatingHeading()
+        locationManager.startUpdatingLocation()
+
+    }
     
 }
 
