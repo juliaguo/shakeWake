@@ -19,6 +19,9 @@
 		DA566F811EB0F6E80074B938 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DA566F7F1EB0F6E80074B938 /* LaunchScreen.storyboard */; };
 		DA566F8C1EB0F6E80074B938 /* shakeWakeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA566F8B1EB0F6E80074B938 /* shakeWakeTests.swift */; };
 		DA566F971EB0F6E80074B938 /* shakeWakeUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA566F961EB0F6E80074B938 /* shakeWakeUITests.swift */; };
+		DA698FE81EC3E95F007C62F4 /* MovingAverage.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA698FE71EC3E95F007C62F4 /* MovingAverage.swift */; };
+		DA75B0461EC96B35007AE4FF /* 1secsilence.wav in Resources */ = {isa = PBXBuildFile; fileRef = DA75B0451EC96B35007AE4FF /* 1secsilence.wav */; };
+		DA9F75251EC3716600111E24 /* Human_Eating_Watermelon.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = DA9F75241EC3716600111E24 /* Human_Eating_Watermelon.mp3 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +60,9 @@
 		DA566F921EB0F6E80074B938 /* shakeWakeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = shakeWakeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA566F961EB0F6E80074B938 /* shakeWakeUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = shakeWakeUITests.swift; sourceTree = "<group>"; };
 		DA566F981EB0F6E80074B938 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DA698FE71EC3E95F007C62F4 /* MovingAverage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MovingAverage.swift; sourceTree = "<group>"; };
+		DA75B0451EC96B35007AE4FF /* 1secsilence.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = 1secsilence.wav; sourceTree = "<group>"; };
+		DA9F75241EC3716600111E24 /* Human_Eating_Watermelon.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Human_Eating_Watermelon.mp3; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,6 +93,8 @@
 		6537A16B1EC0C68E00AFB0A2 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				DA9F75241EC3716600111E24 /* Human_Eating_Watermelon.mp3 */,
+				DA75B0451EC96B35007AE4FF /* 1secsilence.wav */,
 				6537A16C1EC0C6EF00AFB0A2 /* alarm_clock_icon.png */,
 				6537A16D1EC0C6EF00AFB0A2 /* alarm_sound.mp3 */,
 			);
@@ -130,6 +138,7 @@
 				B267B6671EC94CFB00CAD7AF /* MovingAverage.swift */,
 				DA566F761EB0F6E80074B938 /* AppDelegate.swift */,
 				DA566F781EB0F6E80074B938 /* ViewController.swift */,
+				DA698FE71EC3E95F007C62F4 /* MovingAverage.swift */,
 				DA566F7A1EB0F6E80074B938 /* Main.storyboard */,
 				DA566F7D1EB0F6E80074B938 /* Assets.xcassets */,
 				DA566F7F1EB0F6E80074B938 /* LaunchScreen.storyboard */,
@@ -226,6 +235,11 @@
 						CreatedOnToolsVersion = 8.2.1;
 						DevelopmentTeam = 486SAVR7ZP;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
 					};
 					DA566F861EB0F6E80074B938 = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -270,6 +284,8 @@
 				6537A16F1EC0C6EF00AFB0A2 /* alarm_sound.mp3 in Resources */,
 				DA566F7E1EB0F6E80074B938 /* Assets.xcassets in Resources */,
 				DA566F7C1EB0F6E80074B938 /* Main.storyboard in Resources */,
+				DA9F75251EC3716600111E24 /* Human_Eating_Watermelon.mp3 in Resources */,
+				DA75B0461EC96B35007AE4FF /* 1secsilence.wav in Resources */,
 				6537A16E1EC0C6EF00AFB0A2 /* alarm_clock_icon.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -452,7 +468,7 @@
 				DEVELOPMENT_TEAM = 486SAVR7ZP;
 				INFOPLIST_FILE = shakeWake/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "-s062.shakeWake";
+				PRODUCT_BUNDLE_IDENTIFIER = "-s062.shakeWake2";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 			};
@@ -465,7 +481,7 @@
 				DEVELOPMENT_TEAM = 486SAVR7ZP;
 				INFOPLIST_FILE = shakeWake/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "-s062.shakeWake";
+				PRODUCT_BUNDLE_IDENTIFIER = "-s062.shakeWake2";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 			};
