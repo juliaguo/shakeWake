@@ -14,7 +14,41 @@ import CoreLocation
 import UserNotifications
 
 
-class ViewController: UIViewController, CLLocationManagerDelegate {
+import UserNotifications
+
+extension ViewController:UNUserNotificationCenterDelegate{
+    
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        
+        print("Tapped in notification")
+    }
+    
+    //This is key callback to present notification while the app is in foreground
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        
+        print("Notification being triggered")
+        //You can either present alert ,sound or increase badge while the app is in foreground too with ios 10
+        //to distinguish between notifications
+        if notification.request.identifier == "requestIdentifier"{
+            
+            completionHandler( [.alert,.sound,.badge])
+            
+        }
+    }
+}
+
+class ViewController: UIViewController, SensorModelDelegate {
+    
+    
+    func sensorModel(_ model: SensorModel, didChangeActiveHill hill: Hill?) {
+        NSLog("Active Hill Changed");
+    }
+    
+    func sensorModel(_ model: SensorModel, didReceiveRange ranges: [Float], forHill hill: Hill?) {
+        NSLog("Ranges received");
+    }
+
     
     @IBOutlet weak var alarmSetIcon: UIImageView!
     @IBOutlet weak var alarmSetLabel: UILabel!
@@ -36,6 +70,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     var accelAvg = MovingAverage(period: 100)
     
     var alarmRinging = false
+   
     let locationManager = CLLocationManager()
     var threshold: Double = 5.0
     let session: AVAudioSession = AVAudioSession.sharedInstance()

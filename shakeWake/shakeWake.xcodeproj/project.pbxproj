@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		6537A16E1EC0C6EF00AFB0A2 /* alarm_clock_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 6537A16C1EC0C6EF00AFB0A2 /* alarm_clock_icon.png */; };
 		6537A16F1EC0C6EF00AFB0A2 /* alarm_sound.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 6537A16D1EC0C6EF00AFB0A2 /* alarm_sound.mp3 */; };
+		B267B6681EC94CFB00CAD7AF /* MovingAverage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B267B6671EC94CFB00CAD7AF /* MovingAverage.swift */; };
 		B2F4F5DA1EB0FBD30094922D /* SensorModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F4F5D91EB0FBD30094922D /* SensorModel.swift */; };
 		B2F4F5DC1EB0FC600094922D /* BLE.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2F4F5DB1EB0FC600094922D /* BLE.swift */; };
 		DA566F771EB0F6E80074B938 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA566F761EB0F6E80074B938 /* AppDelegate.swift */; };
@@ -43,6 +44,7 @@
 /* Begin PBXFileReference section */
 		6537A16C1EC0C6EF00AFB0A2 /* alarm_clock_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = alarm_clock_icon.png; sourceTree = "<group>"; };
 		6537A16D1EC0C6EF00AFB0A2 /* alarm_sound.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = alarm_sound.mp3; sourceTree = "<group>"; };
+		B267B6671EC94CFB00CAD7AF /* MovingAverage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MovingAverage.swift; sourceTree = "<group>"; };
 		B2F4F5D91EB0FBD30094922D /* SensorModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SensorModel.swift; sourceTree = "<group>"; };
 		B2F4F5DB1EB0FC600094922D /* BLE.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BLE.swift; sourceTree = "<group>"; };
 		DA566F731EB0F6E80074B938 /* shakeWake.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = shakeWake.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -133,6 +135,7 @@
 		DA566F751EB0F6E80074B938 /* shakeWake */ = {
 			isa = PBXGroup;
 			children = (
+				B267B6671EC94CFB00CAD7AF /* MovingAverage.swift */,
 				DA566F761EB0F6E80074B938 /* AppDelegate.swift */,
 				DA566F781EB0F6E80074B938 /* ViewController.swift */,
 				DA698FE71EC3E95F007C62F4 /* MovingAverage.swift */,
@@ -230,7 +233,7 @@
 				TargetAttributes = {
 					DA566F721EB0F6E80074B938 = {
 						CreatedOnToolsVersion = 8.2.1;
-						DevelopmentTeam = 2G76TBKNPC;
+						DevelopmentTeam = 486SAVR7ZP;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
@@ -308,7 +311,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DA698FE81EC3E95F007C62F4 /* MovingAverage.swift in Sources */,
+				B267B6681EC94CFB00CAD7AF /* MovingAverage.swift in Sources */,
 				B2F4F5DA1EB0FBD30094922D /* SensorModel.swift in Sources */,
 				DA566F791EB0F6E80074B938 /* ViewController.swift in Sources */,
 				DA566F771EB0F6E80074B938 /* AppDelegate.swift in Sources */,
@@ -462,7 +465,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 2G76TBKNPC;
+				DEVELOPMENT_TEAM = 486SAVR7ZP;
 				INFOPLIST_FILE = shakeWake/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "-s062.shakeWake2";
@@ -475,7 +478,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 2G76TBKNPC;
+				DEVELOPMENT_TEAM = 486SAVR7ZP;
 				INFOPLIST_FILE = shakeWake/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "-s062.shakeWake2";
