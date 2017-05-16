@@ -22,7 +22,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="y39-Gn-CWP">
-                                <rect key="frame" x="99" y="331" width="190" height="30"/>
+                                <rect key="frame" x="92" y="438" width="190" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal" title="Set Alarm">
@@ -33,7 +33,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="A8E-as-Mtm">
-                                <rect key="frame" x="99" y="380" width="190" height="30"/>
+                                <rect key="frame" x="92" y="484" width="190" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal" title="Cancel Alarm"/>
@@ -42,23 +42,14 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="5:30:00 PM" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9Qt-Mg-Yhh">
-                                <rect key="frame" x="96" y="239" width="193" height="84"/>
+                                <rect key="frame" x="91" y="224" width="193" height="84"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="21"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vQ6-eo-dhX">
-                                <rect key="frame" x="99" y="427" width="190" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <state key="normal" title="Turn Off Alarm"/>
-                                <connections>
-                                    <action selector="turnOffAlarmWithSender:" destination="BYZ-38-t0r" eventType="touchUpInside" id="dVe-lg-qIJ"/>
-                                </connections>
-                            </button>
                             <datePicker contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="time" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="UDP-TE-nl7">
-                                <rect key="frame" x="21" y="98" width="346" height="150"/>
+                                <rect key="frame" x="14" y="81" width="346" height="150"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <date key="date" timeIntervalSinceReferenceDate="515519633.62765098">
                                     <!--2017-05-03 15:53:53 +0000-->
@@ -77,6 +68,23 @@
                                 <rect key="frame" x="102" y="20" width="22" height="22"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
+                            <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="5" minValue="0.0" maxValue="10" translatesAutoresizingMaskIntoConstraints="NO" id="QGz-xO-QvG">
+                                <rect key="frame" x="98" y="334" width="178" height="31"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <connections>
+                                    <action selector="sliderValueChangedWithSender:" destination="BYZ-38-t0r" eventType="valueChanged" id="Zzi-gd-5RP"/>
+                                    <action selector="sliderValueChangedWithSender:" destination="BYZ-38-t0r" eventType="touchDragInside" id="ase-lB-ZIW"/>
+                                    <action selector="updateShakeThresholdValWithSender:" destination="BYZ-38-t0r" eventType="valueChanged" id="wi8-aO-l0W"/>
+                                    <action selector="updateShakeThresholdValWithSender:" destination="BYZ-38-t0r" eventType="touchDragInside" id="ykR-HL-F1S"/>
+                                </connections>
+                            </slider>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Shake Level: 5" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vkV-T2-AyG">
+                                <rect key="frame" x="116" y="305" width="142" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
@@ -86,13 +94,14 @@
                         <outlet property="cancelAlarmButton" destination="A8E-as-Mtm" id="5Ww-vS-St6"/>
                         <outlet property="datePicker" destination="UDP-TE-nl7" id="6Ul-DD-zSk"/>
                         <outlet property="setAlarmButton" destination="y39-Gn-CWP" id="QTR-dW-9Ra"/>
+                        <outlet property="shakeThreshold" destination="QGz-xO-QvG" id="coH-Vn-pmg"/>
+                        <outlet property="shakeThresholdLabel" destination="vkV-T2-AyG" id="4pb-LB-SsW"/>
                         <outlet property="timeLabel" destination="9Qt-Mg-Yhh" id="YgF-KX-yO9"/>
-                        <outlet property="turnOffAlarmButton" destination="vQ6-eo-dhX" id="uvG-H8-tch"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="188" y="254"/>
+            <point key="canvasLocation" x="188" y="253.2233883058471"/>
         </scene>
     </scenes>
     <resources>

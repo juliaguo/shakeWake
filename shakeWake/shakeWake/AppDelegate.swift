@@ -7,15 +7,51 @@
 //
 
 import UIKit
+//import UserNotifications
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
+    
+//    let options: UNAuthorizationOptions = [.alert, .sound];
+//    let notificationDelegate = UYLNotificationDelegate()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+//        center.delegate = notificationDelegate
+//        center.requestAuthorization(options: options) {
+//            (granted, error) in
+//            if !granted {
+//                print("Something went wrong")
+//            }
+//        }
+//        
+//        center.getNotificationSettings { (settings) in
+//            if settings.authorizationStatus != .authorized {
+//                // Notifications not allowed
+//            }
+//        }
+//        
+//        let content = UNMutableNotificationContent()
+//        content.title = "Don't forget"
+//        content.body = "Buy some milk"
+//        content.sound = UNNotificationSound.default()
+//        
+//        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 20,
+//                                                        repeats: false)
+//        
+//        let identifier = "UYLLocalNotification"
+//        let request = UNNotificationRequest(identifier: identifier,
+//                                            content: content, trigger: trigger)
+//        center.add(request, withCompletionHandler: { (error) in
+//            if let error = error {
+//                // Something went wrong
+//            }
+//        })
+        
+        
+        
         return true
     }
 
@@ -43,4 +79,33 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
 }
-
+//
+//class UYLNotificationDelegate: NSObject, UNUserNotificationCenterDelegate {
+//    
+//    func userNotificationCenter(_ center: UNUserNotificationCenter,
+//                                willPresent notification: UNNotification,
+//                                withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+//        // Play sound and show alert to the user
+//        completionHandler([.alert,.sound])
+//    }
+//    
+//    func userNotificationCenter(_ center: UNUserNotificationCenter,
+//                                didReceive response: UNNotificationResponse,
+//                                withCompletionHandler completionHandler: @escaping () -> Void) {
+//        
+//        // Determine the user action
+//        switch response.actionIdentifier {
+//        case UNNotificationDismissActionIdentifier:
+//            print("Dismiss Action")
+//        case UNNotificationDefaultActionIdentifier:
+//            print("Default")
+////        case "Snooze":
+////            print("Snooze")
+////        case "Delete":
+////            print("Delete")  
+//        default:
+//            print("Unknown action")
+//        }
+//        completionHandler()
+//    }
+//}

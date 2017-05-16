@@ -11,6 +11,8 @@ import AVFoundation
 import CoreMotion
 import GLKit
 import CoreLocation
+import UserNotifications
+
 
 class ViewController: UIViewController, CLLocationManagerDelegate {
     
@@ -20,22 +22,26 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     @IBOutlet weak var setAlarmButton: UIButton!
     @IBOutlet weak var datePicker: UIDatePicker!
     @IBOutlet weak var timeLabel: UILabel!
-    @IBOutlet weak var turnOffAlarmButton: UIButton!
+    @IBOutlet weak var shakeThresholdLabel: UILabel!
+//    @IBOutlet weak var turnOffAlarmButton: UIButton!
     var theTimer: Timer!
     var dateString: String!
     var strDate: String?
     var selectedAlarmTime: String?
     var player: AVAudioPlayer?
     
+    @IBOutlet weak var shakeThreshold: UISlider!
     // 3D accel
     var motionManager: CMMotionManager = CMMotionManager()
     var accelAvg = MovingAverage(period: 100)
-    let threshold: Double = 7.0
+    
     var alarmRinging = false
     let locationManager = CLLocationManager()
-    
+    var threshold: Double = 5.0
     let session: AVAudioSession = AVAudioSession.sharedInstance()
-    
+    let center = UNUserNotificationCenter.current()
+    let options: UNAuthorizationOptions = [.alert, .sound];
+    let notificationDelegate = UYLNotificationDelegate()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,14 +52,12 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         strDate = dateFormatter.string(from: datePicker.date)
         dateFormatter.dateFormat = "hh:mm a"
         alarmSetLabel.text = dateFormatter.string(from: datePicker.date)
-        turnOffAlarmButton.isEnabled = false
-        setTime()
+//        turnOffAlarmButton.isEnabled = false
         alarmSetLabel.isHidden = true
         
+        setTime()
         locationManager.requestAlwaysAuthorization()
-        
         locationManager.delegate = self
-        
         // 3D accel
         motionManager.deviceMotionUpdateInterval = 1e-2
         
@@ -63,6 +67,13 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                 self?.accumulateMotion(motion)
         }
         
+        // audio
+        setupAudio()
+        setupNotifCenter()
+    }
+
+    
+    func setupAudio() {
         do {
             print("do block")
             try session.setCategory(AVAudioSessionCategoryPlayback)
@@ -86,12 +97,51 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             print(error.description)
         }
     }
-
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         NSLog("in didUpdateLocations")
     }
     
+    func makeNotif(alarmDate: Date){
+        //NSLog(alarmDate.description)
+//        let date = Date(timeIntervalSinceNow: 10)
+        let triggerDate = Calendar.current.dateComponents([.year,.month,.day,.hour,.minute,], from: alarmDate)
+//        NSLog(date.description)
+        NSLog("trigger date description")
+        NSLog(triggerDate.description)
+        let trigger = UNCalendarNotificationTrigger(dateMatching: triggerDate,
+                                                    repeats: false)
+        let content = UNMutableNotificationContent()
+        content.title = "Don't forget"
+        content.body = "Buy some milk"
+//        content.sound = UNNotificationSound(named: "Pop_Sound_Effect.aiff")
+        content.sound = UNNotificationSound.default()
+        let identifier = "UYLLocalNotification"
+        let request = UNNotificationRequest(identifier: identifier,
+                                            content: content, trigger: trigger)
+        center.add(request, withCompletionHandler: { (error) in
+            if let error = error {
+                // Something went wrong
+            }
+        })
+    }
+    
+    func setupNotifCenter(){
+        center.delegate = notificationDelegate
+        center.requestAuthorization(options: options) {
+            (granted, error) in
+            if !granted {
+                print("Something went wrong")
+            }
+        }
+        
+        center.getNotificationSettings { (settings) in
+            if settings.authorizationStatus != .authorized {
+                // Notifications not allowed
+            }
+        }
+        
+    }
     
     @IBAction func datePickerAction(sender: AnyObject) {
         var dateFormatter = DateFormatter()
@@ -106,13 +156,16 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         alarmSetLabel.isEnabled = true
         alarmSetLabel.isHidden = false
         alarmSetIcon.isHidden = false
+        makeNotif(alarmDate: datePicker.date)
+//        NSLog("alarm threshold set")
+//        NSLog(String(threshold))
+        
         
     }
     
     func playSound() {
         let url = Bundle.main.url(forResource: "alarm_sound", withExtension: "mp3")!
-//        NSLog(String(describing: url))
-        //NSLog("playing sound")
+
         do {
             //print("creating player")
             player = try AVAudioPlayer(contentsOf: url)
@@ -157,7 +210,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         selectedAlarmTime = ""
         setAlarmButton.isEnabled = true
         cancelAlarmButton.isEnabled = true
-        turnOffAlarmButton.isEnabled = false
+//        turnOffAlarmButton.isEnabled = false
         alarmSetLabel.isEnabled = false
         alarmSetLabel.isHidden = true
         alarmSetIcon.isHidden = true
@@ -171,6 +224,25 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         alarmSetLabel.isEnabled = false
         alarmSetIcon.isHidden = true
         alarmRinging = false
+    }
+    
+   
+    @IBAction func updateShakeThresholdVal(sender: AnyObject) {
+        threshold = Double(shakeThreshold.value)
+        shakeThresholdLabel.text = "Shake Level: " + String(Int(threshold))
+//        NSLog(String(threshold))
+        
+    }
+    
+    let step: Float = 1
+    @IBAction func sliderValueChanged(sender: UISlider) {
+        let roundedValue = round(sender.value / step) * step
+        sender.value = roundedValue
+//        NSLog("sender value")
+//        NSLog(String(sender.value))
+        shakeThresholdLabel.text = "Shake Level: " + String(Int(sender.value))
+        // Do something else with the value
+        
     }
     
     func setTime() {
@@ -187,7 +259,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             if(timeToWake){
                 //NSLog("TIME TO WAKE!!!!!!")
                 soundAlarm()
-                turnOffAlarmButton.isEnabled = true
+//                turnOffAlarmButton.isEnabled = true
                 cancelAlarmButton.isEnabled = false
                 setAlarmButton.isEnabled = false
             }
@@ -250,6 +322,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         locationManager.distanceFilter = 0
         locationManager.headingOrientation = .portrait
         locationManager.allowsBackgroundLocationUpdates = true
+        locationManager.pausesLocationUpdatesAutomatically = false
         locationManager.startUpdatingHeading()
         locationManager.startUpdatingLocation()
 
@@ -257,3 +330,33 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     
 }
 
+
+class UYLNotificationDelegate: NSObject, UNUserNotificationCenterDelegate {
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                willPresent notification: UNNotification,
+                                withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        // Play sound and show alert to the user
+        completionHandler([.alert,.sound])
+    }
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                didReceive response: UNNotificationResponse,
+                                withCompletionHandler completionHandler: @escaping () -> Void) {
+        
+        // Determine the user action
+        switch response.actionIdentifier {
+        case UNNotificationDismissActionIdentifier:
+            print("Dismiss Action")
+        case UNNotificationDefaultActionIdentifier:
+            print("Default")
+            //        case "Snooze":
+            //            print("Snooze")
+            //        case "Delete":
+        //            print("Delete")
+        default:
+            print("Unknown action")
+        }
+        completionHandler()
+    }
+}
