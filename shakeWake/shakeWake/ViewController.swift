@@ -16,14 +16,6 @@ import UserNotifications
 
 class ViewController: UIViewController, CLLocationManagerDelegate, SensorModelDelegate {
     
-    
-    func sensorModel(_ model: SensorModel, didChangeActiveHill hill: Hill?) {
-        NSLog("Active Hill Changed");
-    }
-    
-    func sensorModel(_ model: SensorModel, didReceiveRange ranges: [Float], forHill hill: Hill?) {
-        NSLog("Ranges received");
-    }
 
     
     @IBOutlet weak var alarmSetIcon: UIImageView!
@@ -46,7 +38,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, SensorModelDe
     var accelAvg = MovingAverage(period: 100)
     
     var alarmRinging = false
-   
+    let RSSIthreshold: Double = -50.0
+    var thresholdCounter: Double = 0.0
+
     let locationManager = CLLocationManager()
     var threshold: Double = 5.0
     let session: AVAudioSession = AVAudioSession.sharedInstance()
