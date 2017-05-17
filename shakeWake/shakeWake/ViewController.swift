@@ -38,14 +38,6 @@ extension ViewController:UNUserNotificationCenterDelegate{
 
 class ViewController: UIViewController, SensorModelDelegate {
     
-    
-    func sensorModel(_ model: SensorModel, didChangeActiveHill hill: Hill?) {
-        NSLog("Active Hill Changed");
-    }
-    
-    func sensorModel(_ model: SensorModel, didReceiveRange ranges: [Float], forHill hill: Hill?) {
-        NSLog("Ranges received");
-    }
 
     
     @IBOutlet weak var alarmSetIcon: UIImageView!
@@ -66,13 +58,39 @@ class ViewController: UIViewController, SensorModelDelegate {
     var accelAvg = MovingAverage(period: 100)
     let threshold: Double = 7.0
     var alarmRinging = false
-   
+    let RSSIthreshold: Double = -50.0
+    var thresholdCounter: Double = 0.0
+
     let locationManager = CLLocationManager()
     
     let session: AVAudioSession = AVAudioSession.sharedInstance()
     
     
+    //Sensor Model Delegate Functionss
+    func sensorModel(_ model: SensorModel, didChangeActiveHill hill: Hill?) {
+        NSLog("Active Hill Changed");
+    }
     
+    func sensorModel(_ model: SensorModel, didReceiveRange ranges: [Float], forHill hill: Hill?) {
+        NSLog("Ranges received");
+    }
+    
+    func sensorModel(_ model: SensorModel, didReceiveRSSI rssi: Double) {
+        NSLog("Received RSSI: " + String(rssi))
+        if (rssi >= RSSIthreshold) {
+            
+            thresholdCounter = thresholdCounter + 1
+            if (thresholdCounter == 3) {
+                NSLog("SHUTTING OFF ALARM")
+                turnOffAlarm(sender: self)
+                thresholdCounter = 0.0;
+            }
+        }
+        else {
+            thresholdCounter = max(0.0, thresholdCounter - 1.0)
+        }
+        //Distance Estimation: d = 10 ^ ((P-Rssi) / 10n)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()

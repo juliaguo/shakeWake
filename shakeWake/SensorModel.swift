@@ -19,6 +19,7 @@ protocol SensorModelDelegate {
     
     func sensorModel(_ model: SensorModel, didChangeActiveHill hill: Hill?)
     func sensorModel(_ model: SensorModel, didReceiveRange ranges: [Float], forHill hill: Hill?)
+    func sensorModel(_ model: SensorModel, didReceiveRSSI rssi: Double)
     
 }
 
@@ -62,13 +63,19 @@ class SensorModel: BLEDelegate{
     var sensorRanges = [Float]()
     var activeHill: Hill?
     var activePeripheral: CBPeripheral?
-    var activeRSSI: NSNumber?
+    var activeRSSI = 0.0
+    let RSSIthreshold: Double
+    var thresholdCounter: Double
+    var rssiAvg = MovingAverage(period: 5)
     var ble: BLE
     
     
     init() {
+        RSSIthreshold = -50.0
+        thresholdCounter = 0.0
         ble = BLE()
         ble.delegate = self
+        
     }
     
     //Check if Bluetooth is powered on
@@ -97,19 +104,19 @@ class SensorModel: BLEDelegate{
         self.delegate?.sensorModel(self, didChangeActiveHill: activeHill)
         activePeripheral?.readRSSI()
         NSLog("Connected: ")
+        
     }
     
     func ble(_ peripheral: CBPeripheral, didUpdateRSSI rssi: NSNumber?) {
         activePeripheral?.readRSSI()
-        activeRSSI = rssi
-        NSLog("RSSI: \(activeRSSI!)")
+        var currentRSSI = rssi!.doubleValue
+        self.delegate?.sensorModel(self, didReceiveRSSI: currentRSSI)
     }
     
     func ble(_ peripheral: CBPeripheral, didReceiveData data: Data?) {
         
         // Convert incoming non-nil Data optional into a String
         let str = String(data: data!, encoding: String.Encoding.ascii)!
-        NSLog("Incoming String: \(str)")
         
         
         //TODO
