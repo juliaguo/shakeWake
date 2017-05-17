@@ -47,6 +47,32 @@ class ViewController: UIViewController, CLLocationManagerDelegate, SensorModelDe
     let center = UNUserNotificationCenter.current()
     let options: UNAuthorizationOptions = [.alert, .sound];
     let notificationDelegate = UYLNotificationDelegate()
+    
+    //Sensor Model Delegate Functionss
+    func sensorModel(_ model: SensorModel, didChangeActiveHill hill: Hill?) {
+        NSLog("Active Hill Changed");
+    }
+    
+    func sensorModel(_ model: SensorModel, didReceiveRange ranges: [Float], forHill hill: Hill?) {
+        NSLog("Ranges received");
+    }
+    
+    func sensorModel(_ model: SensorModel, didReceiveRSSI rssi: Double) {
+        NSLog("Received RSSI: " + String(rssi))
+        if (rssi >= RSSIthreshold) {
+            
+            thresholdCounter = thresholdCounter + 1
+            if (thresholdCounter == 3) {
+                NSLog("SHUTTING OFF ALARM")
+                turnOffAlarm(sender: self)
+                thresholdCounter = 0.0;
+            }
+        }
+        else {
+            thresholdCounter = max(0.0, thresholdCounter - 1.0)
+        }
+        //Distance Estimation: d = 10 ^ ((P-Rssi) / 10n)
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -332,6 +358,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, SensorModelDe
         locationManager.startUpdatingLocation()
 
     }
+    
     
 }
 
