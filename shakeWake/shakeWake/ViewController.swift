@@ -89,6 +89,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, SensorModelDe
         setTime()
         locationManager.requestAlwaysAuthorization()
         locationManager.delegate = self
+        SensorModel.shared.delegate = self
         // 3D accel
         motionManager.deviceMotionUpdateInterval = 1e-2
         
@@ -234,6 +235,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, SensorModelDe
 //        triggerNotif()
         //sendNotif(alarmTime: datePicker.date)
         alarmRinging = true
+        SensorModel.shared.alarmActivated()
     }
     
     @IBAction func turnOffAlarm(sender: AnyObject) {
@@ -246,6 +248,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, SensorModelDe
         alarmSetLabel.isHidden = true
         alarmSetIcon.isHidden = true
         alarmRinging = false
+        SensorModel.shared.alarmDeactivated()
         
     }
     

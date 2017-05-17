@@ -125,14 +125,8 @@ class BLE: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
         }
         
         print("[DEBUG] Connecting to peripheral: \(peripheral.identifier.uuidString)")
-        if (peripheral.identifier.uuidString == "CE2296C3-5F53-4CAD-8835-5C1F7DCB2961") {
-            centralManager.connect(peripheral, options: [CBConnectPeripheralOptionNotifyOnDisconnectionKey : NSNumber(value: true)])
-            return true
-        }
-        else {
-            print("[DEBUG] Found wrong peripheral: \(peripheral.identifier.uuidString)")
-            return true
-        }
+        centralManager.connect(peripheral, options: [CBConnectPeripheralOptionNotifyOnDisconnectionKey : NSNumber(value: true)])
+        return true
         
     
     }

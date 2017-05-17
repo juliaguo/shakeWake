@@ -68,14 +68,16 @@ class SensorModel: BLEDelegate{
     var thresholdCounter: Double
     var rssiAvg = MovingAverage(period: 5)
     var ble: BLE
+    var alarmGoingOff: Bool
     
     
     init() {
+        NSLog("Created SensorModel object")
         RSSIthreshold = -50.0
         thresholdCounter = 0.0
+        self.alarmGoingOff = false
         ble = BLE()
         ble.delegate = self
-        
     }
     
     //Check if Bluetooth is powered on
@@ -83,17 +85,38 @@ class SensorModel: BLEDelegate{
         NSLog("Starting up")
         if (state == BLEState.poweredOn) {
             //If powered on, start scanning
-            ble.startScanning(timeout: SensorModel.kBLE_SCAN_TIMEOUT)
-            NSLog("Scanning")
+            if (alarmGoingOff) {
+                ble.startScanning(timeout: SensorModel.kBLE_SCAN_TIMEOUT)
+                NSLog("Scanning")
+            }
         }
         else {
             NSLog("BLE not powered")
         }
     }
     
+    func alarmActivated(){
+        NSLog("AlarmActivated and now scanning")
+        ble.startScanning(timeout: SensorModel.kBLE_SCAN_TIMEOUT)
+        alarmGoingOff = true
+    }
+    
+    func alarmDeactivated() {
+        NSLog("AlarmDeactivated and no longer scanning")
+        alarmGoingOff = false
+        ble.stopScanning()
+        ble.disconnectFromPeripheral(activePeripheral!)
+        
+    }
+    
     func ble(didDiscoverPeripheral peripheral: CBPeripheral ) {
         NSLog("Found peripheral:")
-        ble.connectToPeripheral(peripheral)
+        if (alarmGoingOff) {
+            ble.connectToPeripheral(peripheral)
+        }
+        else {
+            NSLog("Can't Connect - alarm not ringing")
+        }
     }
     
     func ble(didConnectToPeripheral peripheral: CBPeripheral) {
